@@ -40,13 +40,11 @@ volatile:禁止指令重排<br/>
 第一步是必须的，对于指令重排来说，第二步和第三步是可以指令重排的。<br/>
 如果直接赋值变量后，但是并没有初始化就去使用就会出现意向不到的问题。<br/>
 
-对于反射攻击来说，懒汉模式无法解决<br/>
-
 优点<br/>
 在使用时候，才需要创建实例，适合于实例资源较大的<br/>
 
 缺点<br/>
-无法解决反射攻击<br/>
+<br/>
 ```java
 public class LazySingletonInstanceApp {
     public static void main(String[] args) throws InterruptedException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
