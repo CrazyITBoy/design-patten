@@ -7,7 +7,7 @@ import java.lang.reflect.InvocationTargetException;
  * @author 元胡
  * @date 2021/04/03 5:39 下午
  */
-public class LazySingletonInstance {
+public class LazySingletonInstanceApp {
     public static void main(String[] args) throws InterruptedException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         //单线程情况
 //        LazyInstance instance = LazyInstance.getInstance();
@@ -39,32 +39,32 @@ public class LazySingletonInstance {
 //        //使用countDownLatch 保证所有的线程执行完成
 //        latch.await();
 //        System.out.println((threadInstance.get()) == (threadInstance2.get()));
-        Class<LazyInstance> lazyInstanceClass = LazyInstance.class;
-        Constructor<LazyInstance> declaredConstructor = lazyInstanceClass.getDeclaredConstructor();
+        Class<LazySingletonInstance> lazyInstanceClass = LazySingletonInstance.class;
+        Constructor<LazySingletonInstance> declaredConstructor = lazyInstanceClass.getDeclaredConstructor();
         declaredConstructor.setAccessible(true);
-        LazyInstance lazyInstance = declaredConstructor.newInstance();
+        LazySingletonInstance lazyInstance = declaredConstructor.newInstance();
 
 
-        System.out.println(LazyInstance.getInstance());
+        System.out.println(LazySingletonInstance.getInstance());
         System.out.println(lazyInstance);
 
     }
 
 }
 
-class LazyInstance {
+class LazySingletonInstance {
 
-    private static volatile LazyInstance lazyInstance;
+    private static volatile LazySingletonInstance lazyInstance;
 
-    private LazyInstance() {
+    private LazySingletonInstance() {
         System.out.println("test");
     }
 
-    public static LazyInstance getInstance() throws InterruptedException {
+    public static LazySingletonInstance getInstance() throws InterruptedException {
         if (lazyInstance == null) {
-            synchronized (LazyInstance.class){
+            synchronized (LazySingletonInstance.class){
                 if(lazyInstance == null){
-                    lazyInstance = new LazyInstance();
+                    lazyInstance = new LazySingletonInstance();
                 }
             }
         }
