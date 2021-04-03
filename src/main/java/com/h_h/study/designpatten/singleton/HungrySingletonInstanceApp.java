@@ -38,7 +38,8 @@ public class HungrySingletonInstanceApp {
 
 class HungrySingletonInstance implements Serializable {
 
-    //序列化id 会导致序列化前后的对象，jvm认为不是同一个
+    //序列化id
+    //如果不写序列化id会导致序列化前后的对象，jvm认为不是同一个
     private static final long serialVersionUID = -1302892535948571348L;
 
     private static HungrySingletonInstance INSTANCE = new HungrySingletonInstance();
