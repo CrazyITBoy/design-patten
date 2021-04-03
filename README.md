@@ -156,5 +156,37 @@ public class EnumSingletonInstanceApp {
 在反序列化读取枚举的时候，最终会调用<br/>                
 Enum<?> en = Enum.valueOf((Class)cl, name);<br/>
 保证反序列化的是同一个
+
+<li>序列化与反序列化</li>
+对于
+HungrySingletonInstance.class
+通过给类加上序列化标识，并且重新生成序列化id
+然后重写readResolve方法就可以保证，序列化和反序列化的是同一个对象
+
+```java
+class HungrySingletonInstance implements Serializable {
+
+    //序列化id 会导致序列化前后的对象，jvm认为不是同一个
+    private static final long serialVersionUID = -1302892535948571348L;
+
+    private static HungrySingletonInstance INSTANCE = new HungrySingletonInstance();
+
+    private HungrySingletonInstance(){
+        if(HungrySingletonInstance.getINSTANCE() != null){
+            throw new RuntimeException("单列bean 不允许创建多例！");
+        }
+    }
+
+    public static HungrySingletonInstance getINSTANCE() {
+        return INSTANCE;
+    }
+
+    //该方法返回值必须为Object类型，同时方法名是readResolve，入参必须为空才可以保证
+    //反序列化的时候，才可以从该方法读取实例
+    private Object readResolve(){
+        return getINSTANCE();
+    }
+}
+```
 </ol>
 
