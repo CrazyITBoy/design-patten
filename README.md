@@ -116,5 +116,45 @@ class StaticInnerClassSingletonInstance {
 
 <li>枚举模式</li>
 
+```java
+enum EnumInstance{
+    INSTANCE;
+}
+
+```
+进入编译的枚举class所在文件夹，target目录下<br/>
+进入目录，敲上javap 可以知道后面跟什么参数代表什么意义<br/>
+其中javap -v class名称 代表的时候查看该类的编译后的字节码指令<br/>
+javap -v EnumInstance.class
+
+得到很多字节码描述，其中下面的是关键点
+public static final com.h_h.study.designpatten.singleton.EnumInstance INSTANCE;
+我们可以看到编译后的INSTANCE 被static修饰了，说明是通过执行类的加载，在初始化的时候保证单列的
+
+
+枚举天然不支持反射创建单列，所以不存在反射攻击，且有自己的反序列机制<br/>
+利用类的加载机制保证线程安全<br/>
+
+```java
+public class EnumSingletonInstanceApp {
+
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
+        System.out.println(EnumSingletonInstance.INSTANCE.hashCode());
+        System.out.println(EnumSingletonInstance.INSTANCE.hashCode());
+
+        //写入
+        ObjectOutputStream obs = new ObjectOutputStream(new FileOutputStream("EnumSingletonInstanceApp"));
+        obs.writeObject(EnumSingletonInstance.INSTANCE);
+        //读取
+        ObjectInputStream ois = new ObjectInputStream(new FileInputStream("EnumSingletonInstanceApp"));
+        Object o = ois.readObject();
+
+        System.out.println(o == EnumSingletonInstance.INSTANCE);
+    }
+}
+```
+在反序列化读取枚举的时候，最终会调用<br/>                
+Enum<?> en = Enum.valueOf((Class)cl, name);<br/>
+保证反序列化的是同一个
 </ol>
 
