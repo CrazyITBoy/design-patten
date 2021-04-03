@@ -136,9 +136,9 @@ enum EnumInstance{
 其中javap -v class名称 代表的是查看该类的编译后的字节码指令<br/>
 javap -v EnumInstance.class
 
-得到很多字节码描述，其中下面的是关键点
-public static final com.h_h.study.designpatten.singleton.EnumInstance INSTANCE;
-我们可以看到编译后的INSTANCE 被static修饰了，说明是通过执行类的加载，在初始化的时候保证单例的
+得到很多字节码描述，其中下面的是关键点<br/>
+public static final com.h_h.study.designpatten.singleton.EnumInstance INSTANCE;<br/>
+我们可以看到编译后的INSTANCE 被static修饰了，说明是通过执行类的加载，在初始化的时候保证单例的<br/>
 
 
 枚举天然不支持反射创建单例，所以不存在反射攻击，且有自己的反序列机制<br/>
@@ -164,13 +164,13 @@ public class EnumSingletonInstanceApp {
 ```
 在反序列化读取枚举的时候，最终会调用<br/>                
 Enum<?> en = Enum.valueOf((Class)cl, name);<br/>
-保证反序列化的是同一个
+保证反序列化的是同一个<br/>
 
 <li>序列化与反序列化</li>
-对于
-HungrySingletonInstance.class
-通过给类加上序列化标识，并且重新生成序列化id
-然后加上readResolve方法就可以保证，序列化和反序列化的是同一个对象
+对于<br/>
+HungrySingletonInstance.class<br/>
+通过给类加上序列化标识，并且重新生成序列化id<br/>
+然后加上readResolve方法就可以保证，序列化和反序列化的是同一个对象<br/>
 
 ```java
 class HungrySingletonInstance implements Serializable {
