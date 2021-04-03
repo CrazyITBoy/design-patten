@@ -45,7 +45,7 @@ class HungrySingletonInstance implements Serializable {
 
     private HungrySingletonInstance(){
         if(HungrySingletonInstance.getINSTANCE() != null){
-            throw new RuntimeException("单列bean 不允许创建多例！");
+            throw new RuntimeException("单例bean 不允许创建多例！");
         }
     }
 
