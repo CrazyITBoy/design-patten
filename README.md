@@ -404,5 +404,104 @@ class WxUseCache implements UserCache{
         return 0;
     }
 }
+```
 
+### 建造者模式
+
+指定一个指挥值（Direct），执行创建的步骤。<br/>
+在由一个抽象的构造者，决定对象的构造过程。<br/>
+最后由具体的构造，执行对象的构造。<br/>
+
+```java
+public class BuilderPatten {
+    public static void main(String[] args) {
+        Builder builder = new DefaultProduceBuilder();
+        Direct direct = new Direct(builder);
+
+        Product product = direct.makeProduct(300L, "测试", "红色");
+
+        System.out.println(product.toString());
+    }
+
+}
+
+class Direct {
+
+    private Builder builder;
+
+    Direct(Builder builder) {
+        this.builder = builder;
+    }
+
+    Product makeProduct(Long invalidDate, String name, String color) {
+        builder.buildColor(color);
+        builder.buildName(name);
+        builder.buildInvalidDate(invalidDate);
+        return builder.build();
+    }
+}
+
+interface Builder {
+
+    void buildInvalidDate(Long invalidDate);
+
+    void buildName(String name);
+
+    void buildColor(String color);
+
+    Product build();
+
+}
+
+class DefaultProduceBuilder implements Builder {
+
+    private Long invalidDate;
+
+    private String name;
+
+    private String color;
+
+    @Override
+    public void buildInvalidDate(Long invalidDate) {
+        this.invalidDate = invalidDate;
+    }
+
+    @Override
+    public void buildName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public void buildColor(String color) {
+        this.color = color;
+    }
+
+    @Override
+    public Product build() {
+        return new Product(this.invalidDate, this.name, this.color);
+    }
+}
+
+class Product {
+    private Long invalidDate;
+
+    private String name;
+
+    private String color;
+
+    public Product(Long invalidDate, String name, String color) {
+        this.invalidDate = invalidDate;
+        this.name = name;
+        this.color = color;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "invalidDate=" + invalidDate +
+                ", name='" + name + '\'' +
+                ", color='" + color + '\'' +
+                '}';
+    }
+}
 ```
