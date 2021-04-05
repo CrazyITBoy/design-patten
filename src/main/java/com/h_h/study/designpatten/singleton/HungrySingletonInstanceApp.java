@@ -4,6 +4,7 @@ import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 
 /**
+ * 饿汉模式单例bean
  * @author 元胡
  * @date 2021/04/03 6:13 下午
  */

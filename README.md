@@ -1,6 +1,6 @@
 # 设计模式
-
-## 单例模式
+## 创建型模式
+### 单例模式
 <ol>
 <li>懒汉模式</li>
 
@@ -197,3 +197,212 @@ class HungrySingletonInstance implements Serializable {
 ```
 </ol>
 
+### 简单工厂模式
+
+简单工厂模式，代码简单，只要一个工厂，根据一定的条件生产不同的产品
+
+```java
+public class SimpleFactory {
+
+    //核心代码，根据不同的条件生产不同的对象（产品）
+    public Stock getStock(int type){
+        if(type == 1){
+            return new RetailPOSStock();
+        }else if(type == 2){
+            return new MicroStoreStock();
+        }
+        return null;
+    }
+}
+
+
+interface Stock{
+    boolean subStock();
+}
+
+
+class RetailPOSStock implements Stock{
+
+    @Override
+    public boolean subStock() {
+        return false;
+    }
+}
+
+class MicroStoreStock implements Stock{
+
+    @Override
+    public boolean subStock() {
+        return false;
+    }
+}
+```
+
+### 工厂方法模式
+
+工厂方法模式，将对象的生产延迟到工厂的子类，由不同的子类工厂负责生产不同的对象
+
+```java
+public  class FactoryMethod {
+
+    public static void main(String[] args) {
+        OauthFactory oauthFactory = new AlipayOauthFactory();
+        Oauth oauth = oauthFactory.getOauth();
+        System.out.println(oauth.oauth());
+
+        OauthFactory wxOauthFactory = new WxOauthFactory();
+        Oauth wxOauth = wxOauthFactory.getOauth();
+        System.out.println(wxOauth.oauth());
+    }
+}
+
+//---------------以下便是关于工厂方法的代码---------------
+//抽象工厂
+interface OauthFactory{
+    //获得授权对象
+    Oauth getOauth();
+}
+
+//具体工厂 生成具体的授权对象
+class WxOauthFactory implements OauthFactory{
+
+    @Override
+    public Oauth getOauth() {
+        return new WxOauth();
+    }
+}
+
+//具体工厂 生成具体的授权对象
+class AlipayOauthFactory implements OauthFactory{
+
+    @Override
+    public Oauth getOauth() {
+        return new AlipayOauth();
+    }
+}
+
+//----------生成的产品，授权对象--------
+interface Oauth{
+    int oauth();
+}
+
+class WxOauth implements Oauth{
+    @Override
+    public int oauth() {
+        System.out.println("微信授权！");
+        return 0;
+    }
+}
+
+class AlipayOauth implements Oauth{
+    @Override
+    public int oauth() {
+        System.out.println("支付宝授权！");
+        return 1;
+    }
+}
+```
+### 抽象工厂模式
+
+核心就是提供一个能够创建一系列产品的抽象工厂，然后再由不同的具体工厂进行生产这一系列产品。<br/>
+也就是说一个工厂会生产多个不同产品
+
+```java
+public class AbstractFactory {
+
+    public static void main(String[] args) {
+        //用户网页授权登录微信
+        UserLoginFactory userLoginFactory  = new WxUserLoginFactory();
+        Oauth oauth = userLoginFactory.getOauth();
+        oauth.oauth();
+
+        UserCache userCache = userLoginFactory.getUserCache();
+        userCache.cacheUser();
+
+    }
+
+}
+
+//提供一个创建一系列产品的抽象工厂
+interface UserLoginFactory {
+    Oauth getOauth();
+
+    UserCache getUserCache();
+}
+
+//由具体的工厂进行不同的实现
+class AlipayUserLoginFactory implements UserLoginFactory {
+
+    @Override
+    public Oauth getOauth() {
+        return new AlipayOauth();
+    }
+
+    @Override
+    public UserCache getUserCache() {
+        return new AlipayUseCache();
+    }
+}
+
+class WxUserLoginFactory implements UserLoginFactory {
+
+    @Override
+    public Oauth getOauth() {
+        return new WxOauth();
+    }
+
+    @Override
+    public UserCache getUserCache() {
+        return new WxUseCache();
+    }
+}
+
+
+
+
+//---------------以下便是关于工厂方法的代码---------------
+
+//----------生成的产品，授权对象--------
+interface Oauth{
+    int oauth();
+}
+
+class WxOauth implements Oauth {
+    @Override
+    public int oauth() {
+        System.out.println("微信授权！");
+        return 0;
+    }
+}
+
+class AlipayOauth implements Oauth {
+    @Override
+    public int oauth() {
+        System.out.println("支付宝授权！");
+        return 1;
+    }
+}
+
+interface UserCache{
+    int cacheUser();
+}
+
+class AlipayUseCache implements UserCache{
+
+    @Override
+    public int cacheUser() {
+        System.out.println("缓存支付宝用户OK!");
+        return 0;
+    }
+}
+
+class WxUseCache implements UserCache{
+
+    @Override
+    public int cacheUser() {
+        System.out.println("缓存微信用户OK!");
+        return 0;
+    }
+}
+
+```

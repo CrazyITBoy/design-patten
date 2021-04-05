@@ -4,6 +4,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 /**
+ * 懒汉模式单例bean
  * @author 元胡
  * @date 2021/04/03 5:39 下午
  */
