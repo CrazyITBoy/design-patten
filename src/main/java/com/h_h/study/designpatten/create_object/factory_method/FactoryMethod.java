@@ -1,4 +1,4 @@
-package com.h_h.study.designpatten.factory_method;
+package com.h_h.study.designpatten.create_object.factory_method;
 
 /**
  * @author 元胡

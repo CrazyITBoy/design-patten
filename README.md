@@ -62,8 +62,8 @@ public class LazySingletonInstanceApp {
 }
 ```
 输出：<br/>
-com.h_h.study.designpatten.singleton.LazySingletonInstance@24d46ca6<br/>
-com.h_h.study.designpatten.singleton.LazySingletonInstance@4517d9a3
+com.h_h.study.designpatten.create_object.singleton.LazySingletonInstance@24d46ca6<br/>
+com.h_h.study.designpatten.create_object.singleton.LazySingletonInstance@4517d9a3
 <li>饿汉模式</li>
 
 ```java
@@ -135,7 +135,7 @@ enum EnumInstance{
 javap -v EnumInstance.class
 
 得到很多字节码描述，其中下面的是关键点<br/>
-public static final com.h_h.study.designpatten.singleton.EnumInstance INSTANCE;<br/>
+public static final com.h_h.study.designpatten.create_object.singleton.EnumInstance INSTANCE;<br/>
 我们可以看到编译后的INSTANCE 被static修饰了，说明是通过执行类的加载，在初始化的时候保证单例的<br/>
 
 

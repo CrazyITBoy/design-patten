@@ -1,4 +1,4 @@
-package com.h_h.study.designpatten.singleton;
+package com.h_h.study.designpatten.create_object.singleton;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
@@ -15,7 +15,7 @@ public class HungrySingletonInstanceApp {
         System.out.println(HungrySingletonInstance.getINSTANCE());
 
         //反射攻击
-//        Class<?> hungryInstance = Class.forName("com.h_h.study.designpatten.singleton.HungrySingletonInstance");
+//        Class<?> hungryInstance = Class.forName("com.h_h.study.designpatten.create_object.singleton.HungrySingletonInstance");
 //        Constructor<?> declaredConstructor = hungryInstance.getDeclaredConstructor();
 //        declaredConstructor.setAccessible(true);
 //        Object o = declaredConstructor.newInstance();

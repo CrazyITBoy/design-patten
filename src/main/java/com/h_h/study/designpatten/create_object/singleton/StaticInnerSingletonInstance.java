@@ -1,4 +1,4 @@
-package com.h_h.study.designpatten.singleton;
+package com.h_h.study.designpatten.create_object.singleton;
 
 /**
  * 静态内部类实现单例bean

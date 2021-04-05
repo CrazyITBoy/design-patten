@@ -1,4 +1,4 @@
-package com.h_h.study.designpatten.singleton;
+package com.h_h.study.designpatten.create_object.singleton;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;

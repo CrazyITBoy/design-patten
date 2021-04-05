@@ -1,4 +1,4 @@
-package com.h_h.study.designpatten.factory_simple;
+package com.h_h.study.designpatten.create_object.factory_simple;
 
 /**
  * 简单工厂生
