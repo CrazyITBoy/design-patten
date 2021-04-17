@@ -505,3 +505,214 @@ class Product {
     }
 }
 ```
+
+### 原型模式
+
+原型模式，是一种对象复制的设计模式。<br/>
+
+原型模式可以通过两种方式来实现：<br/>
+（1）实现拷贝接口<br/>
+（2）通过序列化与反序列化<br/>
+（3）通过new对象，然后字段set值<br/>
+#### （1）拷贝
+所有是应用类型的变量都需要实现cloneable接口，并且重新clone方法，如果变量的变量还是引用类型需要继续修改<br>
+深拷贝：只拷贝对象，对象中引用类型的变量只拷贝了引用<br>
+浅拷贝：拷贝对象，并且对引用类型变量，进行了整个对象的拷贝<br>
+```java
+public class Prototype {
+
+    public static void main(String[] args) throws CloneNotSupportedException {
+        Product product = new Product();
+        product.setAge(1);
+        product.setName("测试一下");
+        product.setBaseInfo(new BaseInfo("test",11));
+        Object clone = product.clone();
+
+        System.out.println("original:" + product);
+        System.out.println("clone:" + clone);
+    }
+}
+
+class Product implements Cloneable {
+    private String name;
+
+    private Integer age;
+
+    private BaseInfo baseInfo;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    public BaseInfo getBaseInfo() {
+        return baseInfo;
+    }
+
+    public void setBaseInfo(BaseInfo baseInfo) {
+        this.baseInfo = baseInfo;
+    }
+
+    @Override
+    protected Product clone() throws CloneNotSupportedException {
+        Product product = (com.h_h.study.designpatten.create_object.prototype.Product) super.clone();
+        product.setBaseInfo(this.getBaseInfo().clone());
+        return product;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" + "name='" + name + '\'' + ", age=" + age + ", baseInfo=" + baseInfo + '}';
+    }
+}
+
+class BaseInfo implements Cloneable {
+
+    public BaseInfo(String address, Integer count) {
+        this.address = address;
+        this.count = count;
+    }
+
+    private String address;
+    private Integer count;
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public Integer getCount() {
+        return count;
+    }
+
+    public void setCount(Integer count) {
+        this.count = count;
+    }
+
+    @Override
+    protected BaseInfo clone() throws CloneNotSupportedException {
+        return (BaseInfo) super.clone();
+    }
+}
+```
+#### （2）序列化
+序列化实现拷贝的好处是，引用类型变量只要实现序列化接口，重新序列化id即可，只需要写一个序列化实现接口即可
+````java
+package com.h_h.study.designpatten.create_object.prototype;
+
+import java.io.*;
+
+/**
+ * 序列化实现
+ * 
+ * @author 元胡
+ * @date 2021/04/17 3:26 下午
+ */
+public class Prototype2 {
+
+    public static void main(String[] args) throws CloneNotSupportedException, IOException, ClassNotFoundException {
+        Product2 product = new Product2();
+        product.setAge(1);
+        product.setName("测试一下");
+        product.setBaseInfo2(new BaseInfo2("test",11));
+        Object clone = product.copy();
+
+        System.out.println("original:" + product);
+        System.out.println("clone:" + clone);
+    }
+}
+
+class Product2 implements Serializable {
+    private static final long serialVersionUID = -5689085309484175535L;
+    private String name;
+
+    private Integer age;
+
+    private BaseInfo2 baseInfo2;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    public BaseInfo2 getBaseInfo2() {
+        return baseInfo2;
+    }
+
+    public void setBaseInfo2(BaseInfo2 baseInfo2) {
+        this.baseInfo2 = baseInfo2;
+    }
+
+    public Product2 copy() throws IOException, ClassNotFoundException {
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(bos);
+        oos.writeObject(this);
+        oos.close();
+
+        ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray());
+        ObjectInputStream ois = new ObjectInputStream(bis);
+        return (Product2) ois.readObject();
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" + "name='" + name + '\'' + ", age=" + age + ", baseInfo=" + baseInfo2 + '}';
+    }
+}
+
+class BaseInfo2 implements Serializable {
+
+    public BaseInfo2(String address, Integer count) {
+        this.address = address;
+        this.count = count;
+    }
+
+    private String address;
+    private Integer count;
+
+    public BaseInfo2(String address) {
+        this.address = address;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public Integer getCount() {
+        return count;
+    }
+
+    public void setCount(Integer count) {
+        this.count = count;
+    }
+}
+````
