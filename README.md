@@ -716,3 +716,58 @@ class BaseInfo2 implements Serializable {
     }
 }
 ````
+应用：
+```java
+org.springframework.beans.factory.support.AbstractBeanDefinition
+java.util.Arrays
+```
+### 享元模式
+将一些无差异对象，只存储一份数据，节省空间。
+关键点，缓存相似对象使用Map等等工具
+```java
+public class FlyWeightTest {
+    public static void main(String[] args) {
+        System.out.println(Book.getBook(1));
+        System.out.println(Book.getBook(1));
+        System.out.println(Book.getBook(2));
+        System.out.println(Book.getBook(2));
+    }
+}
+
+class Book {
+
+    private static Map<Integer, Book> typesBookMap = new ConcurrentHashMap<>();
+
+    public Book(int type, String name) {
+        this.type = type;
+        this.name = name;
+    }
+
+    public static Book getBook(Integer type) {
+        Book book;
+        if ((book = typesBookMap.get(type)) != null) {
+            return book;
+        }
+        if (type == 1) {
+            System.out.println("new 语文book");
+            typesBookMap.put(type, new Book(type, "语文"));
+        } else if (type == 2) {
+            System.out.println("new 数学book");
+            typesBookMap.put(type, new Book(type, "数学"));
+        }
+        return getBook(type);
+    }
+
+    private int type;
+
+    private String name;
+}
+```
+
+jdk源码中的应用
+```java
+String,Integer,Long...
+com.sun.org.apache.bcel.internal.generic.InstructionConstants 
+```
+
+### 门面模式（外观模式）
